@@ -21,9 +21,9 @@ import zmq
 
 # Set up CLI options and input
 parser = argparse.ArgumentParser(description="0MQ client")
-parser.add_argument("-s", "--server", help="0MQ server address (default=localhost)")
-parser.add_argument("-p", "--port", help="0MQ server port (default=5555)")
-parser.add_argument("-t", "--topics", help="0MQ topics to subscribe to, comma delimited string, no spaces (default=all)")
+parser.add_argument("--zmq-server", help="0MQ server address (default=localhost)")
+parser.add_argument("--zmq-port", help="0MQ server port (default=5555)")
+parser.add_argument("--zmq-topic", help="0MQ topics to subscribe to, comma delimited string, no spaces (default=all)")
 args = parser.parse_args()
 
 # Set 0MQ connection targets
@@ -39,21 +39,21 @@ else:
 
 #  Prepare 0MQ context and sockets
 context = zmq.Context()
-socket = context.socket(zmq.SUB)
-socket.connect(zmq_connect_target)
+zmq_socket = context.socket(zmq.SUB)
+zmq_socket.connect(zmq_connect_target)
 for t in topics:
-	socket.subscribe(t)
+	zmq_socket.subscribe(t)
 
 # Start reading
-while socket.closed is not True:
+while zmq_socket.closed is not True:
 	try:
-		msg = socket.recv()	
+		msg = zmq_socket.recv()	
 		(msg_topic, msg_payload) = msg.decode("utf-8").split("\n", 1)
 		msg_json = json.loads(msg_payload)
 		print(json.dumps(msg_json, indent=4))
 	except KeyboardInterrupt:
-		socket.disconnect(zmq_connect_target)
-		socket.close()
+		zmq_socket.disconnect(zmq_connect_target)
+		zmq_socket.close()
 
 # The end
 print("\nShutting down, goodbye!")
