@@ -27,21 +27,21 @@ parser.add_argument("--zmq-topic", help="0MQ topics to subscribe to, comma delim
 args = parser.parse_args()
 
 # Set 0MQ connection targets
-zmq_server = args.zmq-server if args.zmq-server is not None else "localhost"
-zmq_port = args.zmq-port if args.zmq-port is not None else "5555"
+zmq_server = args.zmq_server if args.zmq_server is not None else "localhost"
+zmq_port = args.zmq_port if args.zmq_port is not None else "5555"
 zmq_connect_target = "tcp://" + zmq_server + ":" + zmq_port
 
 # Compile 0MQ topics for subscription
-if args.zmq-topic is not None:
-	zmq_topics = args.zmq-topic.split(",")
+if args.zmq_topic is not None:
+	zmq_topic = args.zmq_topic.split(",")
 else:
-	zmq_topics = [""]
+	zmq_topic = [""]
 
 #  Prepare 0MQ context and sockets
 context = zmq.Context()
 zmq_socket = context.socket(zmq.SUB)
 zmq_socket.connect(zmq_connect_target)
-for t in zmq_topics:
+for t in zmq_topic:
 	zmq_socket.subscribe(t)
 
 # Start reading
