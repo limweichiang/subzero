@@ -1,15 +1,16 @@
-# subzero
+# Overview
 subzero.py is a quick/dirty Python script to subscribe to a 0MQ publisher feed and output it in JSON format.
 
 # Command Options
--s SERVER, --server SERVER
+--zmq-server ZMQ_SERVER
     0MQ server address (default=localhost)
-    
--p PORT, --port PORT
+
+--zmq-port ZMQ_PORT
     0MQ server port (default=5555)
-    
--t TOPICS, --topics TOPICS
+
+--zmq-topic ZMQ_TOPIC
     0MQ topics to subscribe to, comma delimited string, no spaces (default=all)
+
     
 # Example
-python3 subzero.py -s 192.168.1.1 -p 5566 -t topic1,topic2,topic3,topic4
+python3 subzero.py --zmq-server 192.168.1.1 --zmq-port 5566 --zmq-topic topic1,topic2,topic3,topic4
