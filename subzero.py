@@ -1,4 +1,5 @@
-
+#!/usr/bin/python3
+#
 #   Copyright 2018 Lim Wei Chiang
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +13,6 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-
-#!/usr/bin/python3
 
 import json
 import argparse
@@ -41,6 +40,7 @@ else:
 context = zmq.Context()
 zmq_socket = context.socket(zmq.SUB)
 zmq_socket.connect(zmq_connect_target)
+
 for t in zmq_topic:
 	zmq_socket.subscribe(t)
 
