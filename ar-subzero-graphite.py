@@ -1,4 +1,5 @@
-
+#!/usr/bin/python3
+#
 #   Copyright 2018 Lim Wei Chiang
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#!/usr/bin/python3
-
 import json
 import argparse
 import zmq
@@ -27,21 +26,22 @@ parser.add_argument("--zmq-topic", help="0MQ topics to subscribe to, comma delim
 args = parser.parse_args()
 
 # Set 0MQ connection targets
-zmq_server = args.server if args.server is not None else "localhost"
-zmq_port = args.port if args.port is not None else "5555"
+zmq_server = args.zmq_server if args.zmq_server is not None else "localhost"
+zmq_port = args.zmq_port if args.zmq_port is not None else "5555"
 zmq_connect_target = "tcp://" + zmq_server + ":" + zmq_port
 
 # Compile 0MQ topics for subscription
-if args.topics is not None:
-	topics = args.topics.split(",")
+if args.zmq_topic is not None:
+	zmq_topic = args.zmq_topic.split(",")
 else:
-	topics = [""]
+	zmq_topic = [""]
 
 #  Prepare 0MQ context and sockets
 context = zmq.Context()
 zmq_socket = context.socket(zmq.SUB)
 zmq_socket.connect(zmq_connect_target)
-for t in topics:
+
+for t in zmq_topic:
 	zmq_socket.subscribe(t)
 
 # Start reading
@@ -50,7 +50,11 @@ while zmq_socket.closed is not True:
 		msg = zmq_socket.recv()	
 		(msg_topic, msg_payload) = msg.decode("utf-8").split("\n", 1)
 		msg_json = json.loads(msg_payload)
-		print(json.dumps(msg_json, indent=4))
+		#print(json.dumps(msg_json, indent=4))
+
+                if column in msg_json and data in msg_json
+                    print(column)
+                    print(data)
 	except KeyboardInterrupt:
 		zmq_socket.disconnect(zmq_connect_target)
 		zmq_socket.close()
